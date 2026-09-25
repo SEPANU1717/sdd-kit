@@ -1,0 +1,58 @@
+name: SDD validation
+
+on:
+  push:
+    paths:
+      - 'AGENTS.md'
+      - 'README.md'
+      - '.agents/**'
+      - '.claude/skills/**'
+      - 'scripts/**'
+      - '.github/workflows/sdd-validation.yml'
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'README.md'
+      - '.agents/**'
+      - '.claude/skills/**'
+      - 'scripts/**'
+      - '.github/workflows/sdd-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  powershell-validation:
+    name: PowerShell validation
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate artifacts
+        shell: pwsh
+        run: ./scripts/test-artifacts.ps1
+      - name: Validate doctor
+        shell: pwsh
+        run: ./scripts/test-sdd-doctor.ps1
+      - name: Check skill mirrors
+        shell: pwsh
+        run: ./scripts/sync-skills.ps1 -CheckOnly
+      - name: Run structural doctor
+        shell: pwsh
+        run: ./scripts/sdd-doctor.ps1 -Path . -AllowProjectTemplate
+
+  posix-validation:
+    name: POSIX validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate shell syntax
+        shell: bash
+        run: bash -n scripts/sdd-doctor.sh
+      - name: Run native doctor
+        shell: bash
+        run: sh scripts/sdd-doctor.sh . --allow-project-template
+      - name: Validate artifacts
+        shell: pwsh
+        run: ./scripts/test-artifacts.ps1

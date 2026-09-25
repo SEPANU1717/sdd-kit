@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sepanu-sdd/spec.schema.json",
+  "allOf": [{ "$ref": "common.schema.json" }, { "properties": { "artifact": { "const": "spec" }, "status": { "enum": ["specifying", "spec-approved"] }, "risk": { "enum": ["quick", "standard", "high-risk"] } } }]
+}

@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sepanu-sdd/plan.schema.json",
+  "allOf": [{ "$ref": "common.schema.json" }, { "properties": { "artifact": { "const": "plan" }, "status": { "enum": ["planned", "plan-approved", "stale"] }, "risk": { "enum": ["quick", "standard", "high-risk"] } } }]
+}

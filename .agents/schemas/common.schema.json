@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sepanu-sdd/common.schema.json",
+  "type": "object",
+  "required": ["artifact", "schema", "feature", "revision", "status"],
+  "properties": {
+    "artifact": { "type": "string" },
+    "schema": { "type": "integer", "const": 1 },
+    "feature": { "type": "string", "pattern": "^[0-9]{8}-[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "type": "string" },
+    "risk": { "type": "string", "enum": ["quick", "standard", "high-risk"] }
+  },
+  "additionalProperties": true
+}

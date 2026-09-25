@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sepanu-sdd/implementation.schema.json",
+  "allOf": [{ "$ref": "common.schema.json" }, { "properties": { "artifact": { "const": "implementation" }, "status": { "enum": ["in-progress", "ready-for-review", "changes-requested"] }, "risk": { "enum": ["quick", "standard", "high-risk"] } } }]
+}

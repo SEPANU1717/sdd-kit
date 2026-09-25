@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/sepanu-sdd/checklist.schema.json",
+  "allOf": [{ "$ref": "common.schema.json" }, { "properties": { "artifact": { "const": "checklist" }, "status": { "enum": ["draft", "pass", "changes-requested", "blocked"] }, "risk": { "enum": ["quick", "standard", "high-risk"] } } }]
+}
