@@ -107,6 +107,9 @@ after that runs on its own and stops only at the stop points listed in
    editing anything in `.agents/skills/`, run:
    - Windows: `pwsh scripts/sync-skills.ps1`
    - macOS/Linux: `sh scripts/sync-skills.sh`
+   - Validate without changing files: `pwsh scripts/sync-skills.ps1 -CheckOnly`
+   Automatic post-edit synchronization is intentionally disabled; run the
+   explicit command after reviewing skill changes.
 5. Commit the kit: `chore: add spec-driven development kit`.
 
 Other agents (Codex, Cursor, Antigravity) read `AGENTS.md` and `.agents/`

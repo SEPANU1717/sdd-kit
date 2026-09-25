@@ -13,6 +13,10 @@ The durable project principles are in `.agents/rules/constitution.md`. Read the
 constitution and only the rule files relevant to the current task; do not load
 every project document by default.
 
+Skill mirrors are synchronized explicitly with `scripts/sync-skills.*`. Do not
+rely on editor hooks to mutate `.claude/skills/`; validate with the script's
+`-CheckOnly` mode before committing.
+
 ## Instruction priority
 
 1. The user's current request
