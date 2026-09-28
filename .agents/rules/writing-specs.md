@@ -12,6 +12,8 @@ A spec is for the user and for every later agent. It holds decisions, not code.
   stops later agents from "helpfully" adding it.
 - **Acceptance criteria**: observable results, written so a reviewer can check
   them without asking anyone.
+- **Risk boundaries**: for high-risk work, state who can do what to which
+  resource, and what happens for denied, invalid, duplicate, or failed input.
 - **Follow-ups**: known gaps to decide later.
 
 ### Acceptance criteria style
@@ -39,10 +41,10 @@ A plan is for the implementer and the reviewer.
   the plan could exceed about 400 lines.
 - **Tests**: which behaviors get which tests.
 - **Out of scope**: repeat the spec's list plus anything the plan defers.
-- **Acceptance**: the spec's criteria that this plan covers, plus technical
-  ones (migration has a down file, no file over 500 lines).
-- **Verification**: the exact commands from `rules/project.md` and the manual
-  checks.
+- **Acceptance**: the spec's criteria that this plan covers, plus relevant
+  technical constraints and a recovery strategy for data changes.
+- **Verification**: applicable routine local commands from `rules/project.md`,
+  scoped operations that need separate authorization, and manual checks.
 - **Estimate**: lines of diff and where to split.
 
 ## Decisions (ADRs)

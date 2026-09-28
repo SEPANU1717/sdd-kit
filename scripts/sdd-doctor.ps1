@@ -25,7 +25,7 @@ function CheckId([string]$Value, [string]$Label) {
   if ($Value -and $Value -notmatch '^[A-Z]{1,4}[0-9]+$') { Fail "invalid $Label '$Value'" }
 }
 
-foreach ($file in @('AGENTS.md','README.md','.agents/rules/project.md','.agents/rules/sdd-workflow.md','.agents/rules/writing-specs.md','.agents/skills/INDEX.md')) { RequireFile $file }
+foreach ($file in @('AGENTS.md','README.md','.agents/rules/project.md','.agents/rules/sdd-workflow.md','.agents/rules/writing-specs.md','.agents/rules/code-quality.md','.agents/rules/security.md','.agents/skills/INDEX.md')) { RequireFile $file }
 
 $project = ReadText '.agents/rules/project.md'
 if (-not $AllowProjectTemplate) {
@@ -35,7 +35,7 @@ if (-not $AllowProjectTemplate) {
 }
 
 if (-not $AllowProjectTemplate) {
-  $commandLines = [regex]::Matches($project, '(?m)^\|\s*(Types|Lint|Tests|Build|Local DB migrate)\s*\|\s*([^|]+)\|')
+  $commandLines = [regex]::Matches($project, '(?m)^\|\s*(Types|Lint|Tests|Build)\s*\|\s*([^|]+)\|')
   foreach ($line in $commandLines) {
     $commandText = $line.Groups[2].Value.Trim().Trim('`')
     if ($commandText -and $commandText -notmatch '^<') {

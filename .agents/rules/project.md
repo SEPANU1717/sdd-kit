@@ -1,7 +1,7 @@
 # Project
 
-Fill this in once per repository. Every skill reads it. Keep it short and true;
-delete lines that do not apply.
+Fill this in once per repository. SDD steps read it when the stack, commands,
+or boundaries matter. Keep it short and true; delete inapplicable lines.
 
 ## Product
 
@@ -19,7 +19,8 @@ delete lines that do not apply.
 
 ## Commands (verified)
 
-Agents run these before a task can be `ready-for-review` and during review.
+Routine checks run before a task can be `ready-for-review` and during review.
+Verify each command locally before adding it. Omit inapplicable rows.
 
 | Check | Command |
 | --- | --- |
@@ -27,7 +28,10 @@ Agents run these before a task can be `ready-for-review` and during review.
 | Lint | <e.g. pnpm lint> |
 | Tests | <e.g. pnpm test> |
 | Build | <e.g. pnpm build> |
-| Local DB migrate | <e.g. pnpm db:migrate> |
+
+Scoped operations (migrations, seeds, uploads, external writes, deployments):
+<command, target environment, and approval needed, or none>. These are not
+routine checks and are never authorized merely by being listed here.
 
 Known pre-existing failures (so agents do not chase them): <none>
 

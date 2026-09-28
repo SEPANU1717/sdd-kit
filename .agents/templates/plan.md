@@ -10,6 +10,7 @@ risk: standard
 # Plan <N>: <title>
 
 - Feature: `.agents/features/<feature-id>/spec.md`
+- Design: <`.agents/features/<feature-id>/design.md` or none>
 - Implements decisions: <D1, D3, D4>
 - Spec revision: <integer>
 - Depends on: <plan N-1, or none>
@@ -53,11 +54,12 @@ risk: standard
 ## Acceptance
 
 - Spec: <AC1, AC2 covered by this plan>
-- Technical: <e.g. migration has a down file; no file over 500 lines>
+- Technical: <relevant project constraints and data recovery strategy, if applicable>
 
 ## Verification
 
-- Commands: <types, lint, test, build from rules/project.md>
+- Routine local checks: <applicable verified commands from rules/project.md>
+- Scoped operations: <target, authorization gate, or none>
 - Manual: <what a human should click through>
 
 ## Expert skills to apply

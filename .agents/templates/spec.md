@@ -44,6 +44,9 @@ Facts found in the code:
 
 Acceptance IDs are stable. Each AC maps to exactly one plan, one or more tasks,
 and test or manual evidence.
+For high-risk work, include actor/resource boundaries and observable denial,
+invalid-input, duplicate, and failure cases where relevant. A generic Security
+row below does not replace these criteria.
 
 ## Non-functional and operational checks
 

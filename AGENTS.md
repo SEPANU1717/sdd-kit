@@ -34,6 +34,8 @@ before continuing.
 | Path | What it holds |
 | --- | --- |
 | `.agents/rules/project.md` | Stack, commands, architecture, conventions (fill this in first) |
+| `.agents/rules/code-quality.md` | Local consistency and review expectations for code changes |
+| `.agents/rules/security.md` | Conditional security and data-boundary controls |
 | `.agents/rules/sdd-workflow.md` | Lifecycle, statuses, gates, who owns which file |
 | `.agents/rules/communication.md` | How agents talk to the user and to each other |
 | `.agents/rules/writing-specs.md` | How to write specs, acceptance criteria and plans |

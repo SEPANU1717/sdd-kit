@@ -23,20 +23,24 @@ implementation report, and must not commit.
 
 ## Steps
 
-1. **Read in full**: the feature's `spec.md`, the plan, the latest `impl-N`
-   report, earlier review rounds, `AGENTS.md`, `.agents/rules/*.md`, and
+1. **Read in full**: the feature's `spec.md`, any linked `design.md`, the plan,
+   the latest `impl-N` report, earlier review rounds, `AGENTS.md`, the base
+   and relevant conditional rules in `.agents/rules/skill-discovery.md`, and
    accepted decisions.
 2. **Get the real diff.** Uncommitted: `git diff` and `git status` (include new
    files). Record the baseline or explicitly say it is unavailable. Use the
    exact diff scope as the truth; the report is only a guide.
-3. **Run the checks** from `project.md` yourself and record real results.
+3. **Run applicable routine local checks** from `project.md` and the plan
+   yourself. Do not run scoped operations without separate authorization;
+   record unverified operational checks and their target.
 4. **Check, in this order**:
    1. Spec decisions: nothing contradicts D1..Dn or an accepted ADR.
    2. Acceptance: each criterion this plan covers, with evidence
       (`path:line` or a test name).
    3. Scope: no changes outside the plan; no unrelated edits.
-   4. Correctness and safety: server-side validation, authorization, money and
-      data handling, error paths, migrations with rollback.
+   4. Correctness and safety: affected trust boundaries, server-side
+      validation, authorization, money and data handling, error paths, and
+      migration recovery.
    5. Tests: the plan's listed behaviors are tested and meaningful.
    6. Rules: `project.md` conventions, file size, design rules if any.
 5. **Write the round** in `review-N-<slug>.md` (template), with findings as
@@ -44,8 +48,10 @@ implementation report, and must not commit.
    independence, every AC/task mapping, and all unverified manual or
    operational checks.
 6. **Verdict**:
-   - `pass`: no blocker or major findings and all checks pass (or fail only for
-     proven pre-existing reasons). Set `tasks.md` to `approved`, owner
+   - `pass`: no blocker or major findings, applicable routine checks pass (or
+     fail only for proven pre-existing reasons), and required AC evidence is
+     present. Do not pass an unverified high-risk security or data-integrity
+     criterion. Set `tasks.md` to `approved`, owner
      `implementer`, next step `/sdd-ship`.
    - `changes-requested`: set `tasks.md` accordingly, next step `/sdd-implement`
      (fix round).

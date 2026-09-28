@@ -52,42 +52,31 @@ can quietly approve its own work or rewrite your decisions.
 
 ## The flow
 
-```
- You: "I want fabrics to set the price"
-   │
-   ▼
-┌───────────────┐  rounds of numbered questions,       spec.md
-│ 1. SPECIFY    │  each with a recommendation     ──►  (decisions D1..Dn,
-│ /sdd-specify  │  you reply "all recommended"          acceptance criteria)
-└───────┬───────┘  or "Q2 B, rest recommended"         YOU APPROVE
-        ▼
-┌───────────────┐  reads the spec + the code,           plan-1-*.md
-│ 2. PLAN       │  splits into parts ≤ ~400 lines  ──►  plan-2-*.md
-│ /sdd-plan     │                                       prompts.md
-└───────┬───────┘                                       YOU APPROVE
-        ▼
-┌───────────────┐  builds one plan (or one part),       code + tests
-│ 3. IMPLEMENT  │  runs types/lint/test/build      ──►  impl-1-*.md
-│ /sdd-implement│
-└───────┬───────┘
-        ▼
-┌───────────────┐  new session or fresh agent;          review-1-*.md
-│ 4. REVIEW     │  checks diff vs spec + plan,     ──►  pass / changes-requested
-│ /sdd-review   │  runs the checks itself
-└───────┬───────┘
-        │ changes-requested ──► back to 3 (fix round, max 3 rounds)
-        ▼ pass
-┌───────────────┐
-│ 5. SHIP       │  commits by explicit path        ──►  one commit per plan
-│ /sdd-ship     │  (never pushes unless you ask)
-└───────┬───────┘
-        ▼
-   next plan (from prompts.md) … until the feature is done
+```mermaid
+flowchart TD
+    A["Idea or change"] --> B["sdd-specify writes spec.md"]
+    B --> C{"User approves spec?"}
+    C -- No --> B
+    C -- Yes --> D["sdd-plan writes plan-N.md and prompts.md"]
+    T["prompts.md template: stages and gates"] --> D
+    P["prompt-master: wording check during planning"] --> D
+    D --> E{"User approves plan?"}
+    E -- No --> D
+    E -- Yes --> F["Implement prompt calls sdd-implement"]
+    F --> G["Code, checks, and impl-N.md"]
+    G --> H["Fresh reviewer prompt calls sdd-review"]
+    H --> I{"Review passes?"}
+    I -- No --> F
+    I -- Yes --> J{"User requests commit?"}
+    J -- No --> K["Wait; no commit"]
+    J -- Yes --> L["Ship prompt calls sdd-ship"]
+    L --> M["Commit; next plan or done"]
 ```
 
-Two approval gates belong to you: **the spec** and **the plan**. Everything
-after that runs on its own and stops only at the stop points listed in
-`.agents/rules/communication.md`.
+`prompt-master` helps the planner write `prompts.md`; the generated prompts
+call only their SDD stage skills. You approve the spec and plan, and request
+the commit after independent review. Other stop points are in
+`.agents/rules/communication.md`. Pushing is a separate request.
 
 ---
 
@@ -98,9 +87,10 @@ after that runs on its own and stops only at the stop points listed in
    - The project already has an `AGENTS.md`? Keep yours and paste this kit's
      "Where things live" and "Non-negotiables" sections into it.
    - The project already has a `CLAUDE.md`? Add the line `@AGENTS.md` at the top.
-2. Fill in `.agents/rules/project.md`: stack, **verified** commands, structure,
-   conventions, boundaries. This is the single most important step; agents run
-   exactly the commands you list there.
+2. Fill in `.agents/rules/project.md`: stack, **verified routine local**
+   commands, structure, conventions, boundaries, and separately gated scoped
+   operations. This is the single most important step. Listing a command does
+   not authorize an external write.
 3. Optional: add your own rule files next to it (for example
    `.agents/rules/design-system.md`) and mention them in `project.md`.
 4. Claude Code: skills appear as `/sdd-specify`, `/sdd-plan` and so on. After
@@ -127,9 +117,9 @@ Choose the smallest lane that still matches the risk:
 - **Quick**: low-risk, well-understood changes. Write a compact spec and
   acceptance criteria, then implement and verify.
 - **Standard**: the normal Spec → Plan → Implement → Review → Ship flow.
-- **High-risk**: security, money, authentication, schema/data, public
-  contracts, or production-impacting changes. Add `design.md`, rollback and
-  non-functional evidence.
+- **High-risk**: security, money, authentication, privacy, uploads, schema/data,
+  public contracts, or production-impacting changes, even when small. Add
+  `design.md`, recovery and non-functional evidence.
 
 Before implementation, run:
 
@@ -188,7 +178,8 @@ Read the plans (they are short). Reply "approved" or ask for changes.
 
 ### Build, review, ship: one session per step
 
-Copy each block from the feature's `prompts.md`:
+Copy each tool-neutral block from the feature's `prompts.md`. On Claude Code,
+the matching slash command can also be used:
 
 ```text
 /sdd-implement .agents/features/20260925-fabric-pricing/plan-1-pricing-catalog.md
@@ -200,15 +191,15 @@ Copy each block from the feature's `prompts.md`:
 /sdd-ship .agents/features/20260925-fabric-pricing/plan-1-pricing-catalog.md
 ```
 
+The planner fills the template using the kit's `prompt-master` skill for
+wording; the spec, plan, and stage gates remain the source of truth.
+
 Why new sessions? The reviewer must not be the agent that wrote the code, and a
 fresh session reads the files instead of trusting chat memory.
 
-### Or: everything in one session
-
-Paste the "All in one session" block from `prompts.md`. The session builds each
-plan, spawns a fresh reviewer agent, fixes findings (max 3 rounds), commits,
-and moves on. Faster for you, heavier on usage, and you lose the chance to look
-between plans.
+Commit only after a passing independent review and an explicit user request.
+The prompt file references the current spec and plan instead of copying them;
+do not combine implement and review in one agent session.
 
 ### Check where things stand
 
@@ -255,8 +246,8 @@ changes an earlier decision, it will say so and ask you to confirm.
   product", not "add a boolean column".
 - Share screenshots and examples; the agent will say what to copy and what not
   to (for example "weight yes, made-up percentage bars no").
-- Say how you want to work: "one prompt, all in one session", or "stop after
-  each plan".
+- Say where to pause: after the spec, after each plan, or after review. The
+  implementer and reviewer still work in separate sessions or agents.
 
 ### Passing messages between sessions
 

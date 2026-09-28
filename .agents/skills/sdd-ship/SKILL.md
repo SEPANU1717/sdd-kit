@@ -15,10 +15,11 @@ the user explicitly asks for that in this session.
 
 ## Steps
 
-1. **Check the gate.** The plan's latest review round says `pass` and
-   `tasks.md` says `approved`. Otherwise stop and say what is missing. (If the
-   user explicitly asks to commit unreviewed work, warn once, then follow the
-   request and write "unreviewed" in the commit body.)
+1. **Check the gate.** The user explicitly requested this commit in the
+   current session, the plan's latest review round says `pass`, and `tasks.md`
+   says `approved`. Without a commit request, stop. If only the review gate is
+   missing and the user explicitly asks to commit unreviewed work, warn once,
+   then follow the request and write "unreviewed" in the commit body.
 2. **Prepare final state**: update the feature status and reports before the
    commit, then collect only the explicit implementation manifest plus the
    feature's spec, plan, reports, reviews and `tasks.md`. Run `git status`; files

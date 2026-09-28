@@ -21,9 +21,10 @@ You may write only:
 
 ## Steps
 
-1. **Read context.** `AGENTS.md`, `.agents/rules/project.md`,
-   `.agents/rules/communication.md`, `.agents/rules/writing-specs.md`,
-   `.agents/decisions/README.md`, `.agents/state/tasks.md`. Stop and report if
+1. **Read context.** `AGENTS.md`, the base rules named in
+   `.agents/rules/skill-discovery.md`, `.agents/rules/writing-specs.md`,
+   relevant conditional rules, `.agents/decisions/README.md`, and
+   `.agents/state/tasks.md`. Stop and report if
    an active feature already covers the same outcome.
 2. **Find facts before asking.** Search the code for how things work today.
    Every question must be grounded in what you found ("today the cart ignores
@@ -38,8 +39,9 @@ You may write only:
    - "all recommended" accepts every recommendation in the table.
    - If an answer changes an earlier one, say so and confirm.
    - Select a risk lane first: Quick for low-risk known work, Standard by
-     default, High-risk for security, money, auth, schema/data, public
-     contracts, or production-impacting changes.
+     default, High-risk for security, money, auth, privacy, uploads,
+     schema/data, public contracts, or production-impacting changes,
+     regardless of diff size.
    - For a bugfix, use `bugfix.md` and gather reproduction, expected behavior,
      root-cause evidence, regression coverage, and preserved behavior.
    - When the user asks a question back, answer it, then continue.
@@ -51,6 +53,8 @@ You may write only:
      acceptance criteria in EARS style, follow-ups.
    - Set `Status: spec-approved` and `Approved by: user, <date>`.
    - Set `Revision: 1` and record non-functional/operational checks.
+   - For high-risk work, include affected trust boundaries and observable
+     denial, invalid-input, retry, or failure behavior in the ACs.
 7. **Decisions that outlive the feature** (a rule the whole project should
    follow): propose an ADR in `.agents/decisions/` and link it from the spec.
 8. **Update `tasks.md`**: add the feature line with `spec-approved`, owner

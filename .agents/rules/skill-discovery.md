@@ -61,7 +61,8 @@ difference in the report.
 
 - Always read `AGENTS.md`, `constitution.md`, the workflow rule, and the
   communication rule.
-- Read project, writing, design, security, database, or deployment rules only
-  when their subject is in scope.
+- Read `project.md` for the stack and verified commands when planning,
+  implementing, or reviewing. Read writing, code-quality, security, design,
+  database, or deployment rules only when their subject is in scope.
 - Do not require a full repository map for typo, copy, investigation, or other
   low-risk work.

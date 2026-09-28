@@ -22,8 +22,8 @@ reason to add ceremony to a Quick-lane change.
 | Step | Skill | Role | Writes | Gate to leave the step |
 | --- | --- | --- | --- | --- |
 | Spec | `sdd-specify` | Analyst | `spec.md`, `decisions/*.md` (proposed) | User says the spec is approved |
-| Plan | `sdd-plan` | Planner | `plan-N-<slug>.md`, `prompts.md` | User approves the plan(s) |
-| Implement | `sdd-implement` | Implementer | code, tests, `impl-N-<slug>.md` | All checks ran; report written |
+| Plan | `sdd-plan` | Planner | `design.md` when needed, `plan-N-<slug>.md`, `prompts.md` | User approves the plan(s) |
+| Implement | `sdd-implement` | Implementer | code, tests, `impl-N-<slug>.md` | Applicable checks ran; AC evidence and report written |
 | Review | `sdd-review` | Reviewer | `review-N-<slug>.md` | Verdict `pass` |
 | Ship | `sdd-ship` | Implementer | a commit | User asked to commit |
 
@@ -36,6 +36,7 @@ One folder per feature: `.agents/features/<feature-id>/`
 - Feature id: `YYYYMMDD-kebab-slug` (date the spec was started).
 - Files:
   - `spec.md`: the what and why. One per feature.
+  - `design.md`: optional architecture and trust-boundary decisions for high-risk or cross-cutting work.
   - `plan-1-<slug>.md`, `plan-2-<slug>.md` ...: the how. Split a feature into
     several plans when it would exceed about 400 lines of diff.
   - `impl-N-<slug>.md`: what was built for plan N, with command results.
@@ -70,6 +71,7 @@ Only the owner edits a file. Everyone else reads it.
 | --- | --- | --- |
 | `spec.md` | analyst (user approves) | read-only; request changes through the user |
 | `plan-N-*.md` | planner (user approves) | read-only |
+| `design.md` | planner (user approves with plans) | read-only |
 | `impl-N-*.md` | implementer | read-only |
 | `review-N-*.md` | reviewer | read-only |
 | `prompts.md` | planner | read-only |
@@ -90,14 +92,21 @@ Only the owner edits a file. Everyone else reads it.
 - Three failed review rounds on the same plan: stop and ask the user.
 - Every AC maps to one plan and task, plus test or manual evidence. An explicit
   justified exception is required for non-testable criteria.
+- A high-risk acceptance criterion about security or data integrity cannot be
+  marked verified solely by code inspection or an unrun check. Record missing
+  evidence and withhold a pass until the required validation exists.
+- `project.md` separates routine local checks from scoped operations such as
+  migrations, writes, deployments, or provider changes. Listing an operation
+  never grants permission to run it.
 - One feature at a time touches a given file. If two features need the same
   file, finish and ship one first.
 
 ## Skipping SDD
 
 Allowed for: typos, copy changes, dependency-free one-line fixes with an
-obvious cause, and pure investigation. Say "skipping SDD: <reason>" and still
-run the checks.
+obvious cause, and pure investigation, provided no security, privacy, money,
+schema/data, public contract, or production boundary is involved. Say
+"skipping SDD: <reason>" and run applicable checks.
 
 ## Housekeeping
 

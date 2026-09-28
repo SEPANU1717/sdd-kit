@@ -16,13 +16,15 @@ application code, install anything, or commit.
 You may write only:
 
 - `.agents/features/<feature-id>/plan-N-<slug>.md`
+- `.agents/features/<feature-id>/design.md` when required
 - `.agents/features/<feature-id>/prompts.md`
 - your feature's line in `.agents/state/tasks.md`
 
 ## Steps
 
-1. **Read.** `AGENTS.md`, `.agents/rules/*.md`, `.agents/decisions/README.md`,
-   the feature's `spec.md` in full, and `.agents/state/tasks.md`.
+1. **Read.** `AGENTS.md`, the base and relevant conditional rules in
+   `.agents/rules/skill-discovery.md`, `.agents/decisions/README.md`, the
+   feature's `spec.md` in full, and `.agents/state/tasks.md`.
    - No spec, or spec not `spec-approved`: stop and suggest `/sdd-specify`.
    - Another active feature owns the same core files: report it and recommend
      an order instead of planning in parallel.
@@ -43,13 +45,21 @@ You may write only:
    includes the spec criteria it covers.
    - Give every implementation task a stable ID and map each AC to exactly one
      plan/task and test or manual evidence.
-   - Require `design.md` for High-risk work and for architecture, contract,
-     migration, concurrency, or non-functional decisions.
+   - Write `design.md` from its template for High-risk work and for
+     architecture, contract, migration, concurrency, or cross-cutting
+     non-functional decisions. Link it from each affected plan.
+   - Map each high-risk boundary and failure case to a control owner and
+     verification evidence; keep unrelated controls out of the plan.
 6. **Self-check before handing over**: every spec decision is implemented by
    some plan or listed as out of scope; no plan contradicts a decision; every
    acceptance criterion is covered by exactly one plan.
-7. **Write `prompts.md`** from `.agents/templates/prompts.md` with the exact
-   commands for each plan.
+7. **Write `prompts.md`** from `.agents/templates/prompts.md`. For each plan,
+   emit complete, short, tool-neutral Implement, Review, and Ship prompts.
+   Replace every placeholder with an exact path and spec revision; refer to
+   source artifacts instead of repeating their contents. Do not put a ship
+   prompt before the explicit user-authorization gate. Apply
+   `.agents/skills/prompt-master/SKILL.md` for wording, while the template and
+   SDD gates remain authoritative.
 8. **Update `tasks.md`**: status `planned`, owner `user`.
 9. **Report**: list the plans with one line each and their estimates, anything
    you had to assume, and ask the user to approve. After approval, set the
@@ -59,8 +69,11 @@ You may write only:
 
 - Plans describe changes precisely enough to implement without the chat.
 - Prefer extending existing code over new abstractions.
-- Database changes: additive migrations with a rollback, applied locally only.
-- Put anything security-, money- or data-sensitive on the server, and say so.
+- Database changes: prefer additive migrations and document a tested rollback
+  or forward-recovery strategy. Do not run a migration without identifying
+  its target and authorization.
+- Put security-, money-, and data-sensitive decisions at the owning trusted
+  boundary, and say where that is.
 
 ## Expert skills
 

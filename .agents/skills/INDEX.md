@@ -5,6 +5,7 @@ scan the folders for anything newer (see .agents/rules/skill-discovery.md).
 
 | Skill | Folder | SDD steps | When | Description |
 | --- | --- | --- | --- | --- |
+| prompt-master | `prompt-master` | plan | writing or revising a feature's prompts.md handoff prompts | Write or improve concise, paste-ready prompts for a named AI tool when explicitly asked. During SDD planning, refine feature handoff prom... |
 | sdd-analyze | `sdd-analyze` | workflow | optional before implement | Check specs, plans, decisions, and evidence for contradictions, omissions, stale revisions, and untestable criteria before implementation. |
 | sdd-checklist | `sdd-checklist` | workflow | optional after specify or clarify | Evaluate a requirements-quality checklist before planning complex, high-risk, or acceptance-heavy features. |
 | sdd-clarify | `sdd-clarify` | workflow | optional before plan | Find and resolve high-risk ambiguities in an existing spec before planning. |

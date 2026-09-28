@@ -2,7 +2,7 @@
 # 1. Rebuilds .agents/skills/INDEX.md from every skill's SKILL.md header.
 # 2. Mirrors .agents/skills into .claude/skills so Claude Code shows them as slash commands.
 # Edit skills in .agents/skills only, then run: sh scripts/sync-skills.sh
-# (Claude Code runs this automatically after file edits, see .claude/settings.json.)
+# Synchronization is explicit; .claude/settings.json does not run a hook.
 set -eu
 root="$(cd "$(dirname "$0")/.." && pwd)"
 skills="$root/.agents/skills"

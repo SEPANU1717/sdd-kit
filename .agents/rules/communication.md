@@ -32,8 +32,9 @@ Ask all questions whose prerequisites are settled, in one numbered round:
 ## Status updates during long work
 
 - Before a long step: one line on what you are about to do.
-- After each step: `✅ <what was completed>` plus anything surprising.
-- Never go silent for a long run; never narrate every file read.
+- At meaningful milestones: what changed and anything surprising.
+- Never go silent for a long run; do not narrate every file read or repeat
+  artifacts already on disk.
 
 ## Stop points
 

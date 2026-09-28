@@ -1,32 +1,28 @@
 # Prompts: <feature title>
 
-Paste one block per new session, in order. Run the doctor before implementation.
-Each step starts only after the previous one is reviewed and shipped.
+Planner: use `.agents/skills/prompt-master/SKILL.md` for concise wording, but
+keep these stage gates and outputs. Replace every placeholder, including the
+spec revision. Duplicate the plan section for each plan in dependency order.
+Keep each block standalone and tool-neutral; the artifacts are the context, so
+do not paste their contents here. Give each block to a new session or agent at
+its gate.
 
-## Plan 1: <title>
+## Plan <N>: <title>
 
-```text
-pwsh -NoProfile -File scripts/sdd-doctor.ps1 -Path .
-/sdd-implement .agents/features/<feature-id>/plan-1-<slug>.md
-```
-
-Then in a new session:
-
-```text
-/sdd-review .agents/features/<feature-id>/plan-1-<slug>.md
-```
-
-After a pass:
+### Implement (after user approves this plan)
 
 ```text
-/sdd-ship .agents/features/<feature-id>/plan-1-<slug>.md
+Use the sdd-implement skill in .agents/skills/sdd-implement/SKILL.md for .agents/features/<feature-id>/plan-<N>-<slug>.md (spec revision <R>). Read AGENTS.md, the spec, the plan, and any linked design. Confirm the plan is approved and run the read-only SDD doctor before editing. Implement only this plan; run applicable local checks, record AC evidence in impl-<N>-<slug>.md, and stop at ready-for-review. Do not commit or perform scoped external operations without authorization.
 ```
 
-## Plan 2: <title>
+### Review (fresh reviewer, after implementation)
 
-<same three blocks>
+```text
+Use the sdd-review skill in .agents/skills/sdd-review/SKILL.md for .agents/features/<feature-id>/plan-<N>-<slug>.md (spec revision <R>). Independently inspect the spec, plan, implementation report, and real diff. Run applicable local checks; record findings, AC evidence, and unverified items in review-<N>-<slug>.md. Give a pass only when its gate is met. Do not edit implementation code or commit.
+```
 
-## All in one session (optional)
+### Ship (only after a pass and explicit user request to commit)
 
-Do not use this shortcut for High-risk work or for changes to the SDD kit
-itself. Independent review is part of the control, not an optional speed mode.
+```text
+Use the sdd-ship skill in .agents/skills/sdd-ship/SKILL.md for .agents/features/<feature-id>/plan-<N>-<slug>.md (spec revision <R>). Verify the latest independent review passed and the user authorized this commit. Stage only the plan's reviewed files, scan the staged diff for secrets, commit, and report the hash and remaining status. Do not push, merge, or deploy unless separately requested.
+```

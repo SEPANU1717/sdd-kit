@@ -1,7 +1,7 @@
 # 1. Rebuilds .agents/skills/INDEX.md from every skill's SKILL.md header.
 # 2. Mirrors .agents/skills into .claude/skills so Claude Code shows them as slash commands.
 # Edit skills in .agents/skills only, then run: pwsh scripts/sync-skills.ps1
-# (Claude Code runs the .sh version automatically after file edits, see .claude/settings.json.)
+# Synchronization is explicit; .claude/settings.json does not run a hook.
 $ErrorActionPreference = "Stop"
 $checkOnly = $args -contains '-CheckOnly'
 $root = Split-Path -Parent $PSScriptRoot
@@ -52,15 +52,30 @@ if ($checkOnly) {
 }
 Write-Output "indexed $($dirs.Count) skills -> .agents/skills/INDEX.md"
 
-New-Item -ItemType Directory -Force -Path $target | Out-Null
+if ($checkOnly) {
+  if (-not (Test-Path -LiteralPath $target -PathType Container)) { throw 'skill mirror directory missing' }
+  $sourceNames = @($dirs | ForEach-Object Name)
+  foreach ($mirrorDir in @(Get-ChildItem -LiteralPath $target -Directory)) {
+    if ($mirrorDir.Name -notin $sourceNames) { throw "mirror-only skill directory: $($mirrorDir.Name)" }
+  }
+} else {
+  New-Item -ItemType Directory -Force -Path $target | Out-Null
+}
 foreach ($dir in $dirs) {
   $dest = Join-Path $target $dir.Name
   if ($checkOnly) {
+    if (-not (Test-Path -LiteralPath $dest -PathType Container)) { throw "skill mirror missing: $($dir.Name)" }
     $sourceFiles = @(Get-ChildItem -LiteralPath $dir.FullName -File -Recurse)
     foreach ($file in $sourceFiles) {
       $relative = $file.FullName.Substring($dir.FullName.Length).TrimStart('\','/')
       $mirrorFile = Join-Path (Join-Path $target $dir.Name) $relative
       if (-not (Test-Path $mirrorFile) -or (Get-FileHash $file.FullName).Hash -ne (Get-FileHash $mirrorFile).Hash) { throw "skill mirror drift: $($dir.Name)/$relative" }
+    }
+    foreach ($file in @(Get-ChildItem -LiteralPath $dest -File -Recurse)) {
+      $relative = $file.FullName.Substring($dest.Length).TrimStart('\','/')
+      if (-not (Test-Path -LiteralPath (Join-Path $dir.FullName $relative) -PathType Leaf)) {
+        throw "mirror-only skill file: $($dir.Name)/$relative"
+      }
     }
     continue
   }

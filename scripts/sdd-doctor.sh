@@ -9,7 +9,7 @@ fail() { printf 'FAIL: %s\n' "$1"; failures=$((failures + 1)); }
 warn() { printf 'WARN: %s\n' "$1"; warnings=$((warnings + 1)); }
 require_file() { [ -f "$ROOT/$1" ] || fail "missing file: $1"; }
 printf 'SDD doctor (POSIX): %s\n' "$ROOT"
-for file in AGENTS.md README.md .agents/rules/project.md .agents/rules/sdd-workflow.md .agents/rules/writing-specs.md .agents/skills/INDEX.md; do require_file "$file"; done
+for file in AGENTS.md README.md .agents/rules/project.md .agents/rules/sdd-workflow.md .agents/rules/writing-specs.md .agents/rules/code-quality.md .agents/rules/security.md .agents/skills/INDEX.md; do require_file "$file"; done
 project="$ROOT/.agents/rules/project.md"
 if [ "$ALLOW_PROJECT_TEMPLATE" != '--allow-project-template' ] && grep -Eq '<project name>|<one or two sentences>|<prototype \| beta \| production>|<e\.g\.|<folder>|<!--' "$project"; then
   fail 'project.md still contains template placeholders'

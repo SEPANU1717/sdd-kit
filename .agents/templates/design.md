@@ -19,8 +19,9 @@ Describe which module owns each state and how data crosses boundaries.
 ## Failure, security, and rollback
 
 - Failure path: <...>
-- Authorization/privacy: <...>
-- Rollback or recovery: <...>
+- Trust boundaries and control owners: <actor, resource, owning module>
+- Authorization/privacy and negative cases: <denied, invalid, replayed, or out-of-order behavior and evidence>
+- Rollback or forward recovery: <...>
 
 ## Non-functional evidence
 
