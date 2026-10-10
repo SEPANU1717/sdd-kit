@@ -4,6 +4,8 @@
 # 2. dist/skills/<skill>-<version>.zip: one zip per skill with SKILL.md and LICENSE at
 #    the root, for marketplaces that take single skills. The sdd-* skills read the
 #    kit's .agents/rules, templates and schemas, so they need the full kit installed.
+# 3. dist/agensi/sdd-kit-<version>.zip: one marketplace listing. packaging/SKILL.md
+#    (an installer skill) at the root, with the kit files next to it.
 # Usage: sh scripts/package-kit.sh
 set -eu
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -15,7 +17,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 version="$(git describe --tags --always)"
 rm -rf dist
-mkdir -p dist/skills
+mkdir -p dist/skills dist/agensi
 
 git archive --format=zip --prefix=sdd-kit/ -o "dist/sdd-kit-$version.zip" HEAD \
   AGENTS.md CLAUDE.md LICENSE README.md .agents .claude scripts
@@ -27,3 +29,6 @@ for dir in .agents/skills/*/; do
   git archive --format=zip --add-file=LICENSE -o "dist/skills/$name-$version.zip" "HEAD:.agents/skills/$name"
   echo "built dist/skills/$name-$version.zip"
 done
+
+git archive --format=zip --add-file=packaging/SKILL.md -o "dist/agensi/sdd-kit-$version.zip" HEAD   AGENTS.md CLAUDE.md LICENSE README.md .agents .claude scripts ':!scripts/package-kit.*'
+echo "built dist/agensi/sdd-kit-$version.zip"

@@ -3,6 +3,8 @@
 # 2. dist/skills/<skill>-<version>.zip: one zip per skill with SKILL.md and LICENSE at
 #    the root, for marketplaces that take single skills. The sdd-* skills read the
 #    kit's .agents/rules, templates and schemas, so they need the full kit installed.
+# 3. dist/agensi/sdd-kit-<version>.zip: one marketplace listing. packaging/SKILL.md
+#    (an installer skill) at the root, with the kit files next to it.
 # Usage: pwsh scripts/package-kit.ps1
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -14,7 +16,7 @@ try {
   if (git status --porcelain) { Write-Warning 'uncommitted changes are not packaged' }
   $version = git describe --tags --always
   if (Test-Path dist) { Remove-Item -Recurse -Force dist }
-  New-Item -ItemType Directory -Force dist/skills | Out-Null
+  New-Item -ItemType Directory -Force dist/skills, dist/agensi | Out-Null
 
   git archive --format=zip --prefix=sdd-kit/ -o "dist/sdd-kit-$version.zip" HEAD `
     AGENTS.md CLAUDE.md LICENSE README.md .agents .claude scripts
@@ -28,5 +30,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "git archive failed for $name" }
     "built dist/skills/$name-$version.zip"
   }
+
+  git archive --format=zip --add-file=packaging/SKILL.md -o "dist/agensi/sdd-kit-$version.zip" HEAD `
+    AGENTS.md CLAUDE.md LICENSE README.md .agents .claude scripts ':!scripts/package-kit.*'
+  if ($LASTEXITCODE -ne 0) { throw 'git archive failed for the Agensi zip' }
+  "built dist/agensi/sdd-kit-$version.zip"
 }
 finally { Pop-Location }

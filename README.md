@@ -119,6 +119,10 @@ project root) and `dist/skills/<skill>-<version>.zip` (one skill each, with
 rules, templates and schemas, so a single-skill zip only works in a project
 that already has the kit installed.
 
+It also writes `dist/agensi/sdd-kit-<version>.zip` for skill marketplaces: an
+installer skill (`packaging/SKILL.md`) at the root with the kit files next to
+it, so one listing installs the whole kit.
+
 ---
 
 ## Using it day to day
