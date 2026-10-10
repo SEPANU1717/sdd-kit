@@ -1,12 +1,12 @@
 ---
-name: prompt-master
+name: sdd-prompts
 description: Write or improve concise, paste-ready prompts for a named AI tool when explicitly asked. During SDD planning, refine feature handoff prompts without changing their workflow gates or source artifacts.
 metadata:
   sdd-steps: plan
   sdd-when: writing or revising a feature's prompts.md handoff prompts
 ---
 
-# Prompt Master
+# SDD Prompts
 
 ## Standalone prompts
 

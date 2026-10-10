@@ -1,6 +1,6 @@
 # Prompts: <feature title>
 
-Planner: use `.agents/skills/prompt-master/SKILL.md` for concise wording, but
+Planner: use `.agents/skills/sdd-prompts/SKILL.md` for concise wording, but
 keep these stage gates and outputs. Replace every placeholder, including the
 spec revision. Duplicate the plan section for each plan in dependency order.
 Keep each block standalone and tool-neutral; the artifacts are the context, so

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.invalid/sepanu-sdd/common.schema.json",
+  "$id": "https://example.invalid/sdd-kit/common.schema.json",
   "type": "object",
   "required": ["artifact", "schema", "feature", "revision", "status"],
   "properties": {

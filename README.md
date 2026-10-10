@@ -1,4 +1,4 @@
-# sepanu-sdd
+# sdd-kit
 
 A drop-in kit for **spec-driven development (SDD)** with AI coding agents
 (Claude Code, Codex, Cursor, Antigravity, and anything that reads `AGENTS.md`).
@@ -59,7 +59,7 @@ flowchart TD
     C -- No --> B
     C -- Yes --> D["sdd-plan writes plan-N.md and prompts.md"]
     T["prompts.md template: stages and gates"] --> D
-    P["prompt-master: wording check during planning"] --> D
+    P["sdd-prompts: wording check during planning"] --> D
     D --> E{"User approves plan?"}
     E -- No --> D
     E -- Yes --> F["Implement prompt calls sdd-implement"]
@@ -73,7 +73,7 @@ flowchart TD
     L --> M["Commit; next plan or done"]
 ```
 
-`prompt-master` helps the planner write `prompts.md`; the generated prompts
+`sdd-prompts` helps the planner write `prompts.md`; the generated prompts
 call only their SDD stage skills. You approve the spec and plan, and request
 the commit after independent review. Other stop points are in
 `.agents/rules/communication.md`. Pushing is a separate request.
@@ -105,6 +105,19 @@ the commit after independent review. Other stop points are in
 Other agents (Codex, Cursor, Antigravity) read `AGENTS.md` and `.agents/`
 directly. If a tool has no slash commands, say "use the sdd-plan skill in
 `.agents/skills/sdd-plan/SKILL.md`" instead.
+
+### Packaging a release
+
+Commit first, then build zips from `HEAD`:
+
+- Windows: `pwsh scripts/package-kit.ps1`
+- macOS/Linux: `sh scripts/package-kit.sh`
+
+This writes `dist/sdd-kit-<version>.zip` (the whole kit, to unzip into a
+project root) and `dist/skills/<skill>-<version>.zip` (one skill each, with
+`SKILL.md` and `LICENSE` at the root). The `sdd-*` skills read the kit's
+rules, templates and schemas, so a single-skill zip only works in a project
+that already has the kit installed.
 
 ---
 
@@ -191,7 +204,7 @@ the matching slash command can also be used:
 /sdd-ship .agents/features/20260925-fabric-pricing/plan-1-pricing-catalog.md
 ```
 
-The planner fills the template using the kit's `prompt-master` skill for
+The planner fills the template using the kit's `sdd-prompts` skill for
 wording; the spec, plan, and stage gates remain the source of truth.
 
 Why new sessions? The reviewer must not be the agent that wrote the code, and a
@@ -438,3 +451,9 @@ like `/review` and `/status`; the prefix avoids clashes.
 - **Traceability**: the mapping from decision to acceptance criterion to task,
   test, and review evidence.
 - **Stale**: a derived artifact based on an older spec revision.
+
+---
+
+## License
+
+MIT. See [LICENSE](LICENSE).

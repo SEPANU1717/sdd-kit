@@ -58,7 +58,7 @@ You may write only:
    Replace every placeholder with an exact path and spec revision; refer to
    source artifacts instead of repeating their contents. Do not put a ship
    prompt before the explicit user-authorization gate. Apply
-   `.agents/skills/prompt-master/SKILL.md` for wording, while the template and
+   `.agents/skills/sdd-prompts/SKILL.md` for wording, while the template and
    SDD gates remain authoritative.
 8. **Update `tasks.md`**: status `planned`, owner `user`.
 9. **Report**: list the plans with one line each and their estimates, anything
